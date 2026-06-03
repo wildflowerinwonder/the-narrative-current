@@ -1,0 +1,49 @@
+---
+import BaseHead from '@/components/common/BaseHead.astro';
+import Navbar from '@/components/ui/nav/Navbar.astro';
+import Footer from '@/components/ui/Footer.astro';
+
+import '@/styles/global.css';
+
+const { title, description, image, keywords } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead title={title} description={description} image={image} keywords={keywords} />
+  </head>
+
+  <body class="bg-[#FAF9F7] text-[#2B2A27]">
+    <Navbar />
+
+    <main>
+      <slot />
+    </main>
+
+    <Footer />
+
+    <script>
+      import Lenis from 'lenis';
+      import gsap from 'gsap';
+      import ScrollTrigger from 'gsap/ScrollTrigger';
+
+      gsap.registerPlugin(ScrollTrigger);
+
+      const lenis = new Lenis({
+        duration: 1.2,
+        easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        touchMultiplier: 2,
+      });
+
+      gsap.ticker.add((time) => {
+        lenis.raf(time * 1000);
+      });
+
+      gsap.ticker.lagSmoothing(0);
+      lenis.on('scroll', ScrollTrigger.update);
+
+      (window as any).lenis = lenis;
+    </script>
+  </body>
+</html>

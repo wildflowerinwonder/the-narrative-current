@@ -1,0 +1,39 @@
+---
+import Panels from './Panels.astro';
+---
+
+<section data-services="section" class="w-full py-0">
+  <div data-services="panels">
+    <Panels />
+  </div>
+</section>
+
+<script>
+  import gsap from 'gsap';
+  import ScrollTrigger from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const section = document.querySelector('[data-services="section"]');
+
+  if (section) {
+    const panels = section.querySelector('[data-services="panels"]');
+
+    gsap.set(panels, { opacity: 0, y: 20 });
+
+    gsap
+      .timeline({
+        scrollTrigger: {
+          trigger: section,
+          start: 'top 80%',
+          once: true,
+        },
+      })
+      .to(panels, {
+        opacity: 1,
+        y: 0,
+        duration: 0.7,
+        ease: 'power3.out',
+      });
+  }
+</script>

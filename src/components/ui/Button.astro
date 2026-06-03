@@ -1,0 +1,67 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import { cva, type VariantProps } from 'class-variance-authority';
+import { cn } from '@/lib/utils';
+
+const buttonVariants = cva(
+  ''uppercase tracking-[0.18em] inline-flex items-center rounded-full justify-center gap-2 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-accent disabled:pointer-events-none disabled:opacity-50 transition-all duration-500 font-light',
+  {
+    variants: {
+      variant: {
+        primary:
+          'bg-white/12 backdrop-blur-xl border border-white/20 text-[#FAF9F7] hover:bg-[#A88BC7]/12 hover:border-[#A88BC7]/45 hover:text-[#FAF9F7]',
+
+        secondary:
+          'bg-[#A88BC7]/18 backdrop-blur-xl border border-[#A88BC7]/45 text-[#FAF9F7] hover:bg-[#A88BC7]/24 hover:border-[#A88BC7]/60',
+
+        outline:
+          'bg-transparent border border-primary text-foreground hover:bg-primary hover:text-primary-foreground',
+
+        ghost:
+          'bg-transparent border border-transparent text-foreground hover:bg-primary hover:text-primary-foreground',
+
+        none:
+          'bg-transparent border border-transparent',
+      },
+
+      size: {
+        none: 'px-0 py-2',
+
+        sm: 'px-5 py-2 text-[10px] md:text-[11px]',
+
+        md: 'px-7 py-2.5 text-[11px] md:text-xs',
+
+        lg: 'px-9 py-3 text-xs md:text-sm',
+
+        xl: 'px-11 py-4 text-sm md:text-base',
+
+        icon: 'p-2 in-data-[slot=button-group]:text-foreground',
+      },
+    },
+
+    defaultVariants: {
+      variant: 'primary',
+      size: 'md',
+    },
+  },
+);
+
+interface Props
+  extends HTMLAttributes<'button'>,
+    Omit<HTMLAttributes<'a'>, 'type'>,
+    VariantProps<typeof buttonVariants> {
+  href?: string;
+}
+
+const { variant, size, class: className, href, ...rest } = Astro.props;
+
+const Tag = href ? 'a' : 'button';
+---
+
+<Tag
+  class={cn(buttonVariants({ variant, size }), className)}
+  href={href}
+  {...rest}
+>
+  <slot />
+</Tag>

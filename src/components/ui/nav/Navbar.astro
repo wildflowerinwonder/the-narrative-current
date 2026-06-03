@@ -1,0 +1,179 @@
+---
+import FullscreenMenu from './FullscreenMenu.astro';
+import { navItems } from '@/config/navItems.data';
+
+const currentPath = Astro.url.pathname;
+
+const isLegalPage =
+  currentPath.startsWith('/privacy-policy') ||
+  currentPath.startsWith('/terms-of-use');
+
+const isLightPage =
+  currentPath.startsWith('/blog') ||
+  currentPath.startsWith('/ideas') ||
+  isLegalPage;
+
+const logoSrc = isLightPage
+  ? '/tnc-logo-dark.png'
+  : '/tnc-logo.png';
+
+const navTextClass = isLightPage
+  ? 'text-[#2B2A27]'
+  : 'text-[#FAF9F7]';
+
+const navMutedClass = isLightPage
+  ? 'text-[#2B2A27]/72 hover:text-[#2B2A27]'
+  : 'text-[#FAF9F7]/72 hover:text-[#FAF9F7]';
+
+const mobileBarClass = isLightPage
+  ? 'bg-[#2B2A27]'
+  : 'bg-[#FAF9F7]';
+---
+
+<nav
+  id="site-nav"
+  class="fixed left-0 right-0 top-0 z-40 transition-all duration-500"
+>
+  <div class="mt-2 w-full px-6 py-4 lg:mt-0 lg:px-20 lg:py-7 xl:px-24 2xl:px-28">
+    <div class="flex items-center justify-between">
+
+      <a href="/" class="z-10 flex items-center">
+        <img
+          src={logoSrc}
+          alt="The Narrative Current"
+          class="h-8 w-auto md:h-9 lg:h-9"
+        />
+      </a>
+
+      <div class="hidden items-center gap-8 lg:flex">
+        {
+          navItems.map((item) => {
+            const href =
+              item.title.toLowerCase() === 'contact'
+                ? '#footer'
+                : item.href;
+
+            const isActive =
+              currentPath === item.href ||
+              (item.href !== '/' && currentPath.startsWith(item.href));
+
+            return (
+              <a
+                href={href}
+                class:list={[
+                  'text-[0.85rem] uppercase tracking-[0.15em] transition-all duration-300',
+                  isActive ? navTextClass : navMutedClass,
+                ]}
+              >
+                {item.title}
+              </a>
+            );
+          })
+        }
+      </div>
+
+      <button
+        id="menu-toggle"
+        type="button"
+        aria-label="Toggle menu"
+        class="z-10 flex h-9 w-9 flex-col items-center justify-center gap-[0.5rem] lg:hidden"
+      >
+        <span class:list={['block h-[2px] w-7 rounded-full', mobileBarClass]}></span>
+        <span class:list={['block h-[2px] w-7 rounded-full', mobileBarClass]}></span>
+      </button>
+
+    </div>
+  </div>
+</nav>
+
+<FullscreenMenu />
+
+<script>
+  const menuToggle = document.getElementById('menu-toggle');
+  const siteNav = document.getElementById('site-nav');
+  let isMenuOpen = false;
+
+  menuToggle?.addEventListener('click', () => {
+    isMenuOpen = !isMenuOpen;
+    window.dispatchEvent(new CustomEvent('toggleMenu', { detail: { isOpen: isMenuOpen } }));
+  });
+
+  window.addEventListener('closeMenu', () => {
+    isMenuOpen = false;
+  });
+
+  const showNav = () => {
+    siteNav?.classList.remove('-translate-y-full', 'opacity-0', 'pointer-events-none');
+  };
+
+  const hideNav = () => {
+    siteNav?.classList.add('-translate-y-full', 'opacity-0', 'pointer-events-none');
+  };
+
+  const handleNavVisibility = () => {
+    const currentPath = window.location.pathname;
+
+    const alwaysShowNav =
+      currentPath.startsWith('/privacy-policy') ||
+      currentPath.startsWith('/terms-of-use');
+
+    if (alwaysShowNav) {
+      showNav();
+      return;
+    }
+
+    const blogHeading =
+      document.querySelector('[data-blog-heading]') ||
+      document.querySelector('[data-blog="intro"] h1');
+
+    if (blogHeading) {
+      const rect = blogHeading.getBoundingClientRect();
+
+      if (rect.top <= 80) {
+        hideNav();
+      } else {
+        showNav();
+      }
+
+      return;
+    }
+
+    const hero = document.querySelector('[data-hero="section"]');
+
+    if (!hero) {
+      showNav();
+      return;
+    }
+
+    const heroHeight = hero.clientHeight || window.innerHeight;
+
+    if (window.scrollY > heroHeight - 80) {
+      hideNav();
+    } else {
+      showNav();
+    }
+  };
+
+  window.addEventListener('scroll', handleNavVisibility);
+  window.addEventListener('resize', handleNavVisibility);
+  handleNavVisibility();
+
+  document.addEventListener('click', (e) => {
+    const link = e.target.closest('a[href="#footer"]');
+
+    if (!link) return;
+
+    const target = document.getElementById('footer');
+
+    if (!target) return;
+
+    e.preventDefault();
+
+    target.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    });
+
+    history.pushState(null, '', '#footer');
+  });
+</script>

@@ -1,0 +1,112 @@
+---
+import { navItems } from '@/config/navItems.data';
+
+const menuItems = navItems.map((item) => ({
+  ...item,
+  title: item.title === 'Blog' ? 'Ideas' : item.title,
+}));
+---
+
+<div
+  id="menu-overlay"
+  class="fixed inset-0 z-40 hidden bg-black/20 backdrop-blur-sm"
+  aria-hidden="true"
+></div>
+
+<div
+  id="fullscreen-menu"
+  class="fixed inset-0 z-50 bg-[#2B2A27] text-[#FAF9F7]"
+  role="dialog"
+  aria-modal="true"
+  aria-hidden="true"
+  style="transform: translateY(-100%); will-change: transform;"
+>
+  <button
+    id="menu-close-btn"
+    class="absolute right-8 top-8 z-10 flex h-5 w-5 items-center justify-center"
+    aria-label="Close menu"
+    type="button"
+  >
+    <span class="menu-line absolute h-[2px] w-5 rotate-45"></span>
+    <span class="menu-line absolute h-[2px] w-5 -rotate-45"></span>
+  </button>
+
+  <nav class="flex h-full flex-col items-center justify-center gap-8" aria-label="Main navigation">
+    {
+      menuItems.map((item) => (
+        <a
+          href={item.href}
+          data-nav-link
+          class="menu-item-content text-lg uppercase leading-none tracking-[0.1em] text-[#FAF9F7]"
+        >
+          {item.title}
+        </a>
+      ))
+    }
+  </nav>
+</div>
+
+<script>
+  const menu = document.getElementById('fullscreen-menu');
+  const overlay = document.getElementById('menu-overlay');
+  const closeBtn = document.getElementById('menu-close-btn');
+
+  let isOpen = false;
+
+  function openMenu() {
+    if (isOpen) return;
+    isOpen = true;
+
+    document.body.style.overflow = '';
+    document.body.classList.add('menu-open');
+
+    menu?.setAttribute('aria-hidden', 'false');
+    overlay?.classList.remove('hidden');
+
+    if (menu) menu.style.transform = 'translateY(0)';
+    if (overlay) overlay.style.opacity = '1';
+  }
+
+  function closeMenu() {
+    if (!isOpen) return;
+    isOpen = false;
+
+    document.body.style.overflow = '';
+    document.body.classList.remove('menu-open');
+
+    menu?.setAttribute('aria-hidden', 'true');
+    overlay?.classList.add('hidden');
+
+    if (menu) menu.style.transform = 'translateY(-100%)';
+    if (overlay) overlay.style.opacity = '0';
+
+    window.dispatchEvent(new CustomEvent('closeMenu'));
+  }
+
+  closeBtn?.addEventListener('click', closeMenu);
+  overlay?.addEventListener('click', closeMenu);
+
+  document.querySelectorAll('[data-nav-link]').forEach((link) => {
+    link.addEventListener('click', closeMenu);
+  });
+
+  window.addEventListener('toggleMenu', (e) => {
+    const custom = e as CustomEvent;
+    custom.detail.isOpen ? openMenu() : closeMenu();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeMenu();
+  });
+</script>
+
+<style>
+  .menu-line {
+    background-color: #121A2B;
+    transition: background-color 0.2s ease;
+  }
+
+  :global(.menu-open) .menu-line {
+    background-color: #FAF9F7;
+  }
+</style>

@@ -1,0 +1,91 @@
+---
+---
+
+<section
+  data-process="section"
+  class="w-full bg-[#727565]"
+>
+  <div class="px-6 py-20 lg:px-20 lg:py-[6.5rem] xl:px-24 2xl:px-28">
+    <div class="w-full lg:w-3/4">
+
+      <h2
+        data-process="heading"
+        class="max-w-[720px] text-[2.2rem] uppercase leading-[1.02] tracking-[0.02em] text-[#FAF9F7] md:text-4xl lg:text-4xl"
+      >
+        MORE THAN CONTENT CREATION
+      </h2>
+
+      <div class="mt-10 max-w-[980px] space-y-7">
+        <p
+          data-process="eyebrow"
+          class="text-[1rem] leading-[1.38] tracking-[0.01em] text-[#FAF9F7] md:text-lg"
+        >
+          One misaligned message can unravel everything.
+        </p>
+
+        <p
+          data-process="description"
+          class="text-[1rem] leading-[1.38] tracking-[0.01em] text-[#FAF9F7] md:text-lg"
+        >
+          We help our clients navigate competing stakeholder expectations without losing sight of the human story. Grounded in a belief that credible communication balances integrity with resonance, our Strategic Narrative Lens™ pressure-tests narratives against business realities, cultural contexts, and diverse perspectives to uncover inconsistencies and points of friction before the world weighs in.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<script>
+  import gsap from 'gsap';
+  import ScrollTrigger from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const section = document.querySelector('[data-process="section"]');
+
+  if (section) {
+    const heading = section.querySelector('[data-process="heading"]');
+    const eyebrow = section.querySelector('[data-process="eyebrow"]');
+    const description = section.querySelector('[data-process="description"]');
+
+    gsap.set([heading, eyebrow, description], {
+      opacity: 0,
+      y: 24,
+    });
+
+    gsap
+      .timeline({
+        scrollTrigger: {
+          trigger: section,
+          start: 'top 85%',
+          once: true,
+        },
+      })
+      .to(heading, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: 'power3.out',
+      })
+      .to(
+        eyebrow,
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.7,
+          ease: 'power3.out',
+        },
+        '-=0.45'
+      )
+      .to(
+        description,
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.7,
+          ease: 'power3.out',
+        },
+        '-=0.45'
+      );
+  }
+</script>

@@ -1,0 +1,162 @@
+---
+import { actions } from 'astro:actions';
+---
+
+<section
+  id="footer"
+  class="overflow-hidden bg-[#2B2A27]"
+>
+  <h2 class="sr-only">
+    Contact The Narrative Current
+  </h2>
+
+  <div class="px-6 py-16 lg:px-20 lg:py-[5rem] xl:px-24 2xl:px-28">
+
+    <div class="grid w-full grid-cols-1 gap-12 lg:min-h-[10vh] lg:grid-cols-[0.85fr_2.15fr] lg:gap-24">
+
+      <!-- LEFT: BRAND -->
+      <div class="order-2 flex items-center justify-center pt-6 text-center lg:order-1 lg:items-start lg:justify-start lg:pt-0 lg:text-left">
+        <div class="flex flex-col items-center text-center lg:items-start lg:text-left">
+
+          <p class="mb-3 text-[0.65rem] uppercase tracking-[0.22em] text-[#E7E3DD]">
+            Counsel · Care · Craft · Continuity
+          </p>
+
+          <img
+            src="/tnc-logo.png"
+            alt="The Narrative Current"
+            class="w-[300px] max-w-full"
+          />
+
+          <div class="mt-10 text-[0.65rem] uppercase leading-[1.6] tracking-[0.22em] text-[#E7E3DD]">
+            <p>1 Keong Saik Rd</p>
+            <p>SG 089109</p>
+          </div>
+
+          <div class="mt-6 flex flex-col items-center gap-2 lg:flex-row lg:gap-4">
+            <a
+              href="https://www.linkedin.com/company/the-narrative-current"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-[0.65rem] uppercase tracking-[0.22em] text-[#E7E3DD] underline underline-offset-4 transition-opacity duration-300 hover:opacity-70"
+            >
+              LinkedIn
+            </a>
+
+            <a
+              href="https://www.instagram.com/thenarrativecurrent"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-[0.65rem] uppercase tracking-[0.22em] text-[#E7E3DD] underline underline-offset-4 transition-opacity duration-300 hover:opacity-70"
+            >
+              Instagram
+            </a>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- RIGHT: CONTACT -->
+      <div class="order-1 flex items-start justify-center text-center lg:order-2 lg:justify-start lg:text-left">
+        <div class="w-full">
+
+          <div
+            class="mx-auto max-w-[560px] space-y-5 text-center text-[1rem] leading-[1.45] tracking-[0.01em] text-[#E7E3DD] lg:mx-0 lg:text-left"
+          >
+            <p>
+              Ideate audaciously. We'll meet you there.
+            </p>
+
+            <p>
+              Leave us a note or get in touch at hello@thenarrativecurrent.com.
+            </p>
+          </div>
+
+          <form
+            method="POST"
+            action={actions.send}
+            class="mx-auto mt-8 w-full max-w-[560px] space-y-4 text-left lg:mx-0 lg:max-w-full"
+          >
+            <input
+              type="text"
+              name="company"
+              autocomplete="off"
+              tabindex="-1"
+              class="hidden"
+            />
+
+            <input
+              type="text"
+              name="name"
+              placeholder="name"
+              required
+              class="h-[56px] w-full border-b border-[#E7E3DD]/15 bg-transparent text-[0.85rem] text-[#E7E3DD] outline-none transition-colors duration-300 placeholder:text-[#E7E3DD]/35 focus:border-[#E7E3DD]/40"
+            />
+
+            <input
+              type="email"
+              name="email"
+              placeholder="email"
+              required
+              class="h-[56px] w-full border-b border-[#E7E3DD]/15 bg-transparent text-[0.85rem] text-[#E7E3DD] outline-none transition-colors duration-300 placeholder:text-[#E7E3DD]/35 focus:border-[#E7E3DD]/40"
+            />
+
+            <input
+              type="text"
+              name="message"
+              placeholder="message"
+              required
+              class="h-[56px] w-full border-b border-[#E7E3DD]/15 bg-transparent text-[0.85rem] text-[#E7E3DD] outline-none transition-colors duration-300 placeholder:text-[#E7E3DD]/35 focus:border-[#E7E3DD]/40"
+            />
+
+            <div class="flex justify-end pt-4">
+              <button
+                type="submit"
+                class="inline-flex items-center justify-center rounded-[0.5rem] border border-[#E7E3DD]/10 bg-white/5 px-6 py-3 text-[0.65rem] uppercase tracking-[0.22em] text-[#E7E3DD]/90 transition-all duration-300 hover:bg-white/10 hover:text-[#E7E3DD]"
+              >
+                Send
+              </button>
+            </div>
+
+          </form>
+
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<footer class="bg-[#2B2A27] pb-8 text-[#FAF9F7]">
+  <div class="px-6 text-center lg:px-20 lg:text-left xl:px-24 2xl:px-28">
+
+    <p
+      class="text-[0.65rem] uppercase leading-[1.6] tracking-[0.22em] text-[#FAF9F7]"
+    >
+      © 2026 The Narrative Current.<br class="lg:hidden" />
+      All rights reserved.
+    </p>
+
+    <div
+      class="mt-3 flex flex-wrap items-center justify-center gap-3 text-[0.65rem] uppercase tracking-[0.22em] text-[#FAF9F7]/50 lg:justify-start"
+    >
+      <a
+        href="/privacy-policy"
+        class="transition-opacity duration-300 hover:opacity-100"
+      >
+        Privacy Policy
+      </a>
+
+      <span aria-hidden="true">·</span>
+
+      <a
+        href="/terms-of-use"
+        class="transition-opacity duration-300 hover:opacity-100"
+      >
+        Terms of Use
+      </a>
+    </div>
+
+  </div>
+</footer>

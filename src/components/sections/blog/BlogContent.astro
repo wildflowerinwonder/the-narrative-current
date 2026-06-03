@@ -1,0 +1,77 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { t } from '@/lib/utils';
+import BlogCard from './BlogCard.astro';
+
+interface Props {
+  blogs: CollectionEntry<'blogs'>[];
+}
+
+const { blogs } = Astro.props;
+---
+
+<section
+  id="blog"
+  data-blog="section"
+  class="w-full bg-[#FAF9F7] pt-25 pb-28 lg:pt-40"
+>
+  <div class="w-full px-6 lg:px-20 xl:px-24 2xl:px-28">
+
+    <div data-blog="intro" class="w-full">
+      <h1
+        class="mb-8 text-[3rem] leading-[1.1] tracking-[0.001em] text-[#2B2A27] md:text-5xl lg:text-left"
+      >
+        {t('blog.title')}
+      </h1>
+
+      <div
+        data-blog="posts"
+        class="grid grid-cols-1 gap-x-2 gap-y-12 sm:grid-cols-2 lg:grid-cols-3"
+      >
+        {blogs.map((blog) => <BlogCard blog={blog} large />)}
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<script>
+  import gsap from 'gsap';
+  import ScrollTrigger from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const section = document.querySelector('[data-blog="section"]');
+
+  if (section) {
+    const intro = section.querySelector('[data-blog="intro"]');
+    const posts = section.querySelector('[data-blog="posts"]');
+
+    gsap.set([intro, posts], { opacity: 0, y: 20 });
+
+    gsap
+      .timeline({
+        scrollTrigger: {
+          trigger: section,
+          start: 'top 80%',
+          once: true,
+        },
+      })
+      .to(intro, {
+        opacity: 1,
+        y: 0,
+        duration: 0.7,
+        ease: 'power3.out',
+      })
+      .to(
+        posts,
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.7,
+          ease: 'power3.out',
+        },
+        '-=0.4'
+      );
+  }
+</script>

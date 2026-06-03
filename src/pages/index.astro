@@ -1,0 +1,28 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '@/layouts/Layout.astro';
+import GlobeHeroSplit from '@/components/sections/home/hero/GlobeHeroSplit.astro';
+import AboutHome from '@/components/sections/home/AboutHome.astro';
+import Services from '@/components/sections/home/service/Services.astro';
+import Process from '@/components/sections/home/process/Process.astro';
+import BlogsHome from '@/components/sections/home/blogs-home/BlogsHome.astro';
+import { t } from '@/lib/utils';
+
+const blogs = await getCollection('blogs');
+
+const blogFilter = blogs
+  .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime())
+  .slice(0, 4);
+---
+
+<Layout
+  title={t('meta.index.title')}
+  description={t('meta.index.description')}
+  keywords={t('meta.index.keywords')}
+>
+  <GlobeHeroSplit />
+  <AboutHome />
+  <Services />
+  <Process />
+  <BlogsHome blogs={blogFilter} />
+</Layout>

@@ -1,0 +1,95 @@
+@import 'tailwindcss';
+@import './content-style.css';
+
+/* ── Base page behaviour ───────────────────── */
+html,
+body {
+  overflow-x: hidden;
+  width: 100%;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+/* Hide browser scrollbars but keep scrolling */
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
+}
+
+/* ── Lenis smooth scroll ───────────────────── */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+@theme inline {
+  --font-clash: 'Manrope', sans-serif;
+  --font-grotesk: 'Manrope', sans-serif;
+  --font-mono: 'Manrope', sans-serif;
+
+  --color-background: #FAF9F7;
+  --color-foreground: #121A2B;
+
+  --color-primary: #2B2A27;
+  --color-primary-foreground: #F6F1E2;
+
+  --color-surface: #2B2A27;
+  --color-surface-light: rgb(43 42 39 / 10%);
+
+  --color-muted: #2B2A27;
+  --color-muted-foreground: #DDD8D1;
+}
+
+@layer base {
+  body {
+    @apply bg-background text-foreground font-grotesk overflow-x-hidden;
+    font-weight: 400;
+  }
+}
+
+.animated-gradient {
+  background: linear-gradient(
+    to bottom,
+    #E7E3DD 0%,
+    #E7E3DD 28%,
+    #E7E3DD 100%
+  );
+
+  background-size: 100% 220%;
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+
+  animation: gradientShift 18s ease-in-out infinite;
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 50% 0%;
+  }
+
+  50% {
+    background-position: 50% 100%;
+  }
+
+  100% {
+    background-position: 50% 0%;
+  }
+}

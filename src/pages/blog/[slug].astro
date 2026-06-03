@@ -1,0 +1,106 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { getCollection, render } from 'astro:content';
+import Layout from '@/layouts/Layout.astro';
+import BlogSlugHeader from '@/components/sections/blog/BlogSlugHeader.astro';
+import BlogSlugContent from '@/components/sections/blog/BlogSlugContent.astro';
+
+export const prerender = true;
+
+export const getStaticPaths = (async () => {
+  const blogs = await getCollection('blogs');
+
+  return blogs.map((blog) => ({
+    params: { slug: blog.id },
+    props: { blog },
+  }));
+}) satisfies GetStaticPaths;
+
+const { blog } = Astro.props;
+const { Content, headings } = await render(blog);
+
+const formattedDate = new Date(blog.data.pubDate).toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric',
+});
+---
+
+<Layout
+  title={blog.data.title}
+  description={blog.data.description}
+  image={blog.data.heroImage.src}
+>
+  <article
+    class="w-full bg-[#FAF9F7] px-6 pt-24 pb-20 text-[#2B2A27] lg:px-20 lg:pt-40 lg:pb-30 xl:px-24 2xl:px-28"
+  >
+    <BlogSlugHeader {blog} />
+
+    <div class="mt-8 w-full">
+      <p class="mb-6 text-[0.72rem] uppercase tracking-[0.18em] text-[#2B2A27]/55">
+        {formattedDate}
+      </p>
+
+      <BlogSlugContent {headings}>
+        <Content />
+      </BlogSlugContent>
+
+      <div class="mt-12">
+        <!-- MOBILE -->
+        <div class="flex gap-3 lg:hidden">
+          <a
+            id="linkedin-share-mobile"
+            href="#"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group flex h-[50px] flex-1 items-center justify-center rounded-[0.5rem] border border-[#2B2A27] bg-transparent transition-all duration-300 hover:bg-[#2B2A27]"
+          >
+            <span class="text-[0.65rem] uppercase tracking-[0.18em] text-[#2B2A27] transition-colors duration-300 group-hover:text-[#FAF9F7]">
+              Share on LinkedIn
+            </span>
+          </a>
+
+          <a
+            href="/blog"
+            class="group flex h-[50px] flex-1 items-center justify-center rounded-[0.5rem] border border-[#2B2A27] bg-transparent transition-all duration-300 hover:bg-[#2B2A27]"
+          >
+            <span class="text-[0.65rem] uppercase tracking-[0.18em] text-[#2B2A27] transition-colors duration-300 group-hover:text-[#FAF9F7]">
+              Read More
+            </span>
+          </a>
+        </div>
+
+        <!-- DESKTOP -->
+        <div class="hidden lg:flex lg:gap-3">
+          <a
+            id="linkedin-share-desktop"
+            href="#"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center justify-center rounded-[0.5rem] border border-[#2B2A27]/10 bg-[#2B2A27]/5 px-6 py-3 text-[0.65rem] uppercase tracking-[0.22em] text-[#2B2A27]/90 backdrop-blur-xl transition-all duration-300 hover:bg-[#2B2A27]/10 hover:text-[#2B2A27]"
+          >
+            Share on LinkedIn
+          </a>
+
+          <a
+            href="/blog"
+            class="inline-flex items-center justify-center rounded-[0.5rem] border border-[#2B2A27]/10 bg-[#2B2A27]/5 px-6 py-3 text-[0.65rem] uppercase tracking-[0.22em] text-[#2B2A27]/90 backdrop-blur-xl transition-all duration-300 hover:bg-[#2B2A27]/10 hover:text-[#2B2A27]"
+          >
+            Read More
+          </a>
+        </div>
+      </div>
+    </div>
+  </article>
+</Layout>
+
+<script>
+  const shareUrl =
+    `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}`;
+
+  document
+    .querySelectorAll('#linkedin-share-mobile, #linkedin-share-desktop')
+    .forEach((el) => {
+      el.href = shareUrl;
+    });
+</script>

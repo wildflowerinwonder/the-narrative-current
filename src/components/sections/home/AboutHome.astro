@@ -1,0 +1,145 @@
+---
+import { t } from '@/lib/utils';
+---
+
+<section
+  data-about="section"
+  aria-labelledby="about-seo-heading"
+  class="relative w-full overflow-hidden bg-[#E7E3DD]"
+>
+  <h2 id="about-seo-heading" class="sr-only">
+    Integrated Communications Agency in Singapore
+  </h2>
+
+  <div class="grid w-full grid-cols-1 lg:grid-cols-2">
+
+    <!-- LEFT TEXT BLOCK -->
+    <div class="flex items-center bg-[#E7E3DD]">
+      <div class="w-full px-6 py-20 lg:px-20 lg:py-[6.5rem] xl:px-24 2xl:px-28">
+
+        <h2
+          data-about="heading"
+          class="max-w-[560px] whitespace-pre-line text-[2.6rem] uppercase leading-[1.05] tracking-[-0.03em] text-[#2B2A27] md:text-7xl lg:text-6xl"
+        >be seen,
+trusted,
+and
+remembered</h2>
+
+        <div
+          class="mt-10 max-w-[520px] space-y-7 text-[1rem] leading-[1.38] tracking-[0.01em] text-[#2B2A27] md:text-lg"
+        >
+          <p data-about="desc1">
+            In an age of fragmented attention and accelerated media cycles, thoughtful communication has become both a strategic advantage and a public responsibility.
+          </p>
+
+          <p data-about="desc2">
+            The Narrative Current is a Singapore-based integrated communications agency. We partner with brands and institutions to shape stories that spark curiosity, conversation, and meaningful action.
+          </p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- RIGHT EMOTIVE WORD BLOCK -->
+    <div
+      data-about="words-panel"
+      class="flex min-h-[30vh] items-center bg-[#2B2A27] px-6 py-20 lg:px-20 lg:py-[6.5rem] xl:px-24 2xl:px-28"
+    >
+      <div class="w-full max-w-[620px]">
+
+        <p
+          data-about="words-label"
+          class="mb-8 text-[0.8rem] tracking-[0.1em] text-[#E7E3DD]"
+        >
+          Your Stories, Brought To Life
+        </p>
+
+        <div
+          data-about="words"
+          class="animated-gradient whitespace-pre-line text-[2.2rem] uppercase leading-[1.02] tracking-[0.02em] text-[#FAF9F7] md:text-4xl lg:text-4xl"
+        >Hope
+Courage
+Conviction
+Innovation
+Inclusion
+Collaboration
+Resilience
+Integrity
+Transformation
+Progress
+Sustainability
+Impact</div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<script>
+  import gsap from 'gsap';
+  import ScrollTrigger from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const aboutSection = document.querySelector('[data-about="section"]');
+
+  if (aboutSection) {
+    const heading = aboutSection.querySelector('[data-about="heading"]');
+    const desc1 = aboutSection.querySelector('[data-about="desc1"]');
+    const desc2 = aboutSection.querySelector('[data-about="desc2"]');
+    const wordsPanel = aboutSection.querySelector('[data-about="words-panel"]');
+    const wordsLabel = aboutSection.querySelector('[data-about="words-label"]');
+    const words = aboutSection.querySelector('[data-about="words"]');
+
+    gsap.set([heading, desc1, desc2, wordsPanel, wordsLabel, words], {
+      opacity: 0,
+      y: 30,
+    });
+
+    gsap
+      .timeline({
+        scrollTrigger: {
+          trigger: aboutSection,
+          start: 'top 75%',
+          once: true,
+        },
+      })
+      .to(heading, {
+        opacity: 1,
+        y: 0,
+        duration: 0.9,
+        ease: 'power3.out',
+      })
+      .to(desc1, {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        ease: 'power2.out',
+      }, '-=0.45')
+      .to(desc2, {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        ease: 'power2.out',
+      }, '-=0.45')
+      .to(wordsPanel, {
+        opacity: 1,
+        y: 0,
+        duration: 0.9,
+        ease: 'power3.out',
+      }, '-=0.65')
+      .to(wordsLabel, {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        ease: 'power3.out',
+      }, '-=0.7')
+      .to(words, {
+        opacity: 1,
+        y: 0,
+        duration: 0.9,
+        ease: 'power3.out',
+      }, '-=0.45');
+  }
+</script>

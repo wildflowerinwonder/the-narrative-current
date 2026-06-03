@@ -1,0 +1,180 @@
+---
+import { services } from '@/config/services.data';
+import { Image } from 'astro:assets';
+---
+
+<section
+  data-about="section"
+  aria-labelledby="services-heading"
+  class="relative w-full bg-[#FAF9F7] px-6 py-20 lg:px-20 lg:py-[6.5rem] xl:px-24 2xl:px-28"
+>
+  <h2 id="services-heading" class="sr-only">
+    Services
+  </h2>
+
+  <div class="services-track flex h-[680px] w-full flex-row gap-2">
+
+    {
+      services.map((panel, i) => (
+        <div
+          class:list={[
+            'panel',
+            'relative max-w-2xl min-w-0 flex-1 cursor-pointer overflow-hidden rounded-[0.5rem] border border-[#DDD8D1] bg-transparent',
+            { 'is-active': i === 0 },
+          ]}
+          data-index={i}
+        >
+          <div class="pointer-events-none absolute top-0 right-0 left-0 z-30 flex items-center p-5">
+            <span class="mobile-title text-lg text-[#2B2A27]/75 lg:hidden">
+              {panel.title}
+            </span>
+          </div>
+
+          <div class="panel-collapsed-title pointer-events-none absolute z-10 text-[11px] font-bold uppercase leading-[1.25] tracking-[0.16em] text-[#2B2A27]/75 xl:text-xs">
+            {panel.title}
+          </div>
+
+          <div class="panel-content pointer-events-none absolute inset-0 z-20 flex flex-col p-5">
+            <div class="h-1 shrink-0" />
+
+            <div class="mb-5 h-[220px] overflow-hidden rounded-[0.35rem] md:h-[280px] lg:min-h-0 lg:flex-1">
+              <Image
+                src={panel.image}
+                alt={panel.title}
+                class="block h-full w-full object-cover object-center"
+              />
+            </div>
+
+            <div class="shrink-0">
+              <h3 class="mb-4 text-[1.3rem] leading-[1.05] tracking-[0.009em] text-[#2B2A27] md:text-3xl">
+                {panel.title}
+              </h3>
+
+              <p class="mb-4 max-w-xl text-[0.9rem] leading-[1.6] tracking-[0.01em] text-[#2B2A27] md:text-[0.9rem]">
+                {panel.description}
+              </p>
+
+              <div class="flex flex-wrap gap-2">
+                {
+                  panel.tags.map((tag) => (
+                    <span class="rounded-[0.5rem] border border-[#2B2A27] bg-transparent px-3 py-1 text-[0.55rem] font-semibold uppercase tracking-[0.12em] text-[#2B2A27]">
+                      {tag}
+                    </span>
+                  ))
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+      ))
+    }
+
+  </div>
+
+  <script>
+    const panels = document.querySelectorAll<HTMLElement>('.panel');
+    const isMobile = () => window.innerWidth < 1024;
+
+    function activate(index: number) {
+      panels.forEach((p, i) => p.classList.toggle('is-active', i === index));
+    }
+
+    panels.forEach((panel, i) => {
+      panel.addEventListener('mouseenter', () => !isMobile() && activate(i));
+      panel.addEventListener('click', () => isMobile() && activate(i));
+    });
+  </script>
+
+  <style>
+    .panel {
+      transition:
+        flex 0.6s cubic-bezier(0.34, 1.05, 0.64, 1),
+        border-color 0.3s ease,
+        background-color 0.3s ease;
+      will-change: height, flex;
+      transform: translateZ(0);
+      backface-visibility: hidden;
+    }
+
+    .panel.is-active {
+      flex: 3.3;
+      border-color: #DDD8D1;
+      background-color: transparent;
+    }
+
+    .panel-collapsed-title {
+      display: none;
+      left: 1.25rem;
+      right: 1.25rem;
+      bottom: 1.5rem;
+      top: auto;
+      transform: none;
+      writing-mode: horizontal-tb;
+      white-space: normal;
+      overflow-wrap: break-word;
+      line-height: 1.25;
+      letter-spacing: 0.1em;
+      transition: opacity 0.25s ease;
+    }
+
+    .panel.is-active .panel-collapsed-title {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .panel-content {
+      opacity: 0;
+      transform: translateY(8px);
+      transition:
+        opacity 0.15s ease,
+        transform 0.15s ease;
+    }
+
+    .panel.is-active .panel-content {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+      transition:
+        opacity 0.35s ease 0.2s,
+        transform 0.35s ease 0.2s;
+    }
+
+    @media (min-width: 1024px) {
+      .panel-collapsed-title {
+        display: block;
+      }
+    }
+
+    @media (max-width: 1024px) {
+      .services-track {
+        flex-direction: column !important;
+        height: auto !important;
+      }
+
+      .panel {
+        flex: unset !important;
+        height: 72px;
+        transition:
+          height 0.4s ease-in-out,
+          border-color 0.3s ease,
+          background-color 0.3s ease;
+      }
+
+      .panel.is-active {
+        height: auto;
+      }
+
+      .panel.is-active .panel-content {
+        position: relative;
+      }
+
+      .panel-collapsed-title {
+        display: none;
+      }
+
+      .panel.is-active .mobile-title {
+        display: none;
+      }
+    }
+  </style>
+</section>

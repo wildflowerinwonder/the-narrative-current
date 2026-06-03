@@ -1,0 +1,38 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  blog: CollectionEntry<'blogs'>;
+}
+
+const { blog } = Astro.props;
+
+const formattedDate = new Date(blog.data.pubDate).toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric',
+});
+---
+
+<a
+  href={`/blog/${blog.id}`}
+  class="group block"
+>
+  <div class="overflow-hidden">
+    <Image
+      src={blog.data.heroImage}
+      alt={blog.data.title}
+      class="aspect-[16/10] w-full object-cover"
+      loading="eager"
+    />
+  </div>
+
+  <p class="mt-2 text-[0.65rem] uppercase tracking-[0.14em] text-[#2B2A27]/35">
+    {formattedDate}
+  </p>
+
+  <h3 class="mt-1 text-[1.05rem] leading-[1.2] tracking-[-0.01em] text-[#2B2A27]">
+    {blog.data.title}
+  </h3>
+</a>
